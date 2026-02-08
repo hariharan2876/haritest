@@ -1,0 +1,43 @@
+name: Deploy Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Select environment"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
+          - stage
+          - prod
+      version:
+        description: "Application version"
+        required: true
+        default: "1.0.0"
+        type: string
+      approve:
+        description: "Confirm deployment"
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show parameters
+        run: |
+          echo "Environment: ${{ github.event.inputs.environment }}"
+          echo "Version: ${{ github.event.inputs.version }}"
+          echo "Approval: ${{ github.event.inputs.approve }}"
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{ github.event.inputs.approve == 'true' }}
+    steps:
+      - name: Deploy application
+        run: |
+          echo "Deploying version ${{ github.event.inputs.version }} to ${{ github.event.inputs.environment }}"
