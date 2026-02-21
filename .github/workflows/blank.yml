@@ -12,6 +12,15 @@ on:
           - dev
           - stage
           - prod
+          Fam:ilyType:
+        description: "Select Familytype"
+        required: true
+        default: "Subscriber"
+        type: choice
+        options:
+          - Subscriber
+          - Subscriber + Spouse
+          - Subscriber + Spouse + Teen + Child
       version:
         description: "Application version"
         required: true
