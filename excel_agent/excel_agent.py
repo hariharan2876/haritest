@@ -71,11 +71,11 @@ def write_sheet(file_path: str, sheet_name: str, rows: list[dict]) -> dict:
     try:
         df = pd.DataFrame(rows)
         mode = "a" if os.path.exists(file_path) else "w"
-        kwargs = {"engine": "openpyxl", "mode": mode, "sheet_name": sheet_name}
+        kwargs = {"engine": "openpyxl", "mode": mode}
         if mode == "a":
             kwargs["if_sheet_exists"] = "replace"
         with pd.ExcelWriter(file_path, **kwargs) as writer:
-            df.to_excel(writer, index=False)
+            df.to_excel(writer, sheet_name=sheet_name, index=False)
         return {"status": "ok", "file": file_path, "sheet": sheet_name, "rows_written": len(df)}
     except Exception as exc:
         return {"error": str(exc)}
